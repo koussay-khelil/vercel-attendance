@@ -148,6 +148,9 @@ const SignUpTable = (
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchAPI("/Signups").then((data) => setPeople(data));
+    fetchAPI("/attendees").then((data) => setPeople(data));
+    const unique = [...new Set(people)];
+    setPeople(unique);
   }, [loading]);
   const {
     getTableProps,
@@ -416,7 +419,7 @@ const SignUpTable = (
                   native: true,
                 }}
                 onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
               />
             </TableRow>

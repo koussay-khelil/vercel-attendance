@@ -32,7 +32,7 @@ function App() {
   const columns = useMemo(
     () => [
       {
-        Header:  "Genre",
+        Header: "Genre",
         accessor: "Gender",
       },
       {
@@ -70,14 +70,22 @@ function App() {
       {
         Header: "Vacciné",
         accessor: "Vaccinated",
-      }
+      },
+      {
+        Header: "Signée",
+        accessor: (row) => {
+          return row.signed ? "Vrai" : "Faux";
+        },
+      },
     ],
     []
   );
-  
+
   return (
     <div className="App">
-      <Intro eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url} />
+      <Intro
+        eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url}
+      />
       <SignUpTable
         columns={columns}
         setData={setData}
