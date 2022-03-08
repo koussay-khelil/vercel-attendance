@@ -71,12 +71,6 @@ function App() {
         Header: "Vacciné",
         accessor: "Vaccinated",
       },
-      {
-        Header: "Signée",
-        accessor: (row) => {
-          return row.signed ? "Vrai" : "Faux";
-        },
-      },
     ],
     []
   );
