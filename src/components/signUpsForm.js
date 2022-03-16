@@ -68,7 +68,9 @@ export default function SignupForm({ activeEvent, setLoading, loading }) {
         e.surname
       }", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${
         e.email
-      }", "Organization":"${Organization}", "Title":"${e.title}","Phone":"${
+      }", "Organization":"${
+        selectedOrganization !== "Autre" ? selectedOrganization : Organization
+      }", "Title":"${e.title}","Phone":"${
         e.phone
       }", "Vaccinated":"${evax}", "active_events":${JSON.stringify([
         { id: activeEvent.id },

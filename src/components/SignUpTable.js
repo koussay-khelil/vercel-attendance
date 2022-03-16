@@ -146,12 +146,19 @@ const SignUpTable = (
 ) => {
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
+  console.log("activeEvent page", activeEvent);
   useEffect(() => {
-    fetchAPI("/Signups").then((data) => setPeople(data));
-    fetchAPI("/attendees").then((data) => setPeople(data));
-    const unique = [...new Set(people)];
-    setPeople(unique);
-  }, [loading]);
+    if (activeEvent !== undefined) {
+      fetchAPI(`/Signups?active_events=${activeEvent.id}`).then((data) =>
+        setPeople(data)
+      );
+      fetchAPI(`/attendees?active_events=${activeEvent.id}`).then((data) =>
+        setPeople(data)
+      );
+      const unique = [...new Set(people)];
+      setPeople(unique);
+    }
+  }, [loading, activeEvent]);
   const {
     getTableProps,
     headerGroups,
