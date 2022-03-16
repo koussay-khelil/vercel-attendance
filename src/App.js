@@ -86,7 +86,6 @@ function App() {
 
   return (
     <div className="App">
-      {console.log(activeEvent)}
       <Intro
         eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url}
       />

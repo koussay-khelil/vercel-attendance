@@ -16,7 +16,12 @@ import "@material-tailwind/react/tailwind.css";
 
 toast.configure();
 
-export default function SignupForm({ activeEvent, setLoading, loading }) {
+export default function SignupForm({
+  activeEvent,
+  setLoading,
+  loading,
+  handleClose,
+}) {
   const [Gender, setGender] = useState(gender[0]);
   const [Age, setAge] = useState(age[0]);
   const [Organization, setOrganization] = useState("");
@@ -72,9 +77,9 @@ export default function SignupForm({ activeEvent, setLoading, loading }) {
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
       }", "Title":"${e.title}","Phone":"${
         e.phone
-      }", "Vaccinated":"${evax}", "active_events":${JSON.stringify([
-        { id: activeEvent.id },
-      ])}}`
+      }", "Vaccinated":"${evax}", "active_event":${JSON.stringify(
+        activeEvent.id
+      )}}`
     );
     axios
       .post(`https://vt-events.herokuapp.com/attendees`, formData, {
@@ -83,6 +88,7 @@ export default function SignupForm({ activeEvent, setLoading, loading }) {
       .then((res) => {
         toast.success("You have successfully been assigned as an attendee");
         setLoading(!loading);
+        handleClose();
       })
       .catch((err) => {
         console.log("err", err.response.data.message);
@@ -90,6 +96,7 @@ export default function SignupForm({ activeEvent, setLoading, loading }) {
           toast.error(
             "An error has occurred. You might have been already registered. Please try again later"
           );
+          handleClose();
         }
       });
   };
@@ -212,7 +219,7 @@ export default function SignupForm({ activeEvent, setLoading, loading }) {
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
-              {selectedOrganization !== "أخرى" ? (
+              {selectedOrganization !== "Autre" ? (
                 <div class="w-full px-3">
                   <label
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
