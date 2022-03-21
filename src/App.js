@@ -19,10 +19,6 @@ function App() {
     setActiveEvent(activeEvents[0]);
   }, [activeEvents]);
 
-  const handleChange = (event) => {
-    setActiveEvent(event.target.value);
-  };
-
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
     setSkipPageReset(true);
@@ -89,21 +85,7 @@ function App() {
       <Intro
         eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url}
       />
-      <div>Change Active Event</div>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={activeEvents[0]}
-        label="Age"
-        onChange={handleChange}
-      >
-        {activeEvents.map((event) => (
-          <MenuItem value={event} key={event.id}>
-            {" "}
-            {event.event.title}
-          </MenuItem>
-        ))}
-      </Select>
+
       <SignUpTable
         columns={columns}
         setData={setData}

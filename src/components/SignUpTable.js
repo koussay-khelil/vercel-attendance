@@ -308,9 +308,13 @@ const SignUpTable = (
       )}}`
     );
     axios
-      .post(`https://vt-events.herokuapp.com/attendees`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+      .post(
+        `https://visit-tunisia-backoffice.herokuapp.com/attendees`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      )
       .then((res) => {
         handleClose();
         toast.success("You have successfully been assigned as an attendee");
