@@ -23,6 +23,7 @@ import { governorate } from "../data/governorates";
 import { gender } from "../data/gender";
 import { organizations } from "../data/organisation";
 import { age } from "../data/age";
+import { workshops } from "../data/workshops";
 import TextInput from "./TextInput";
 import * as Yup from "yup";
 import Button from "@material-tailwind/react/Button";
@@ -151,7 +152,7 @@ const SignUpTable = (
       fetchAPI(`/Signups?active_events.id=${activeEvent.id}`).then((data) =>
         setPeople(data)
       );
-      fetchAPI(`/attendees?active_event.id=${activeEvent.id}`).then((data) =>
+      fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then((data) =>
         setPeople(data)
       );
       const unique = [...new Set(people)];
@@ -216,6 +217,7 @@ const SignUpTable = (
   const [surname, setSurname] = useState("");
   const [Gender, setGender] = useState("");
   const [Age, setAge] = useState("");
+  const [Workshop, setWorkshop] = useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [organization, setOrganization] = React.useState("");
@@ -239,6 +241,7 @@ const SignUpTable = (
     setEmail(values[7]);
     setPhone(values[8]);
     setEvax(values[9]);
+    setWorkshop(values[10]);
     setEventId(activeEvent.id);
     setOpen(true);
   };
@@ -255,6 +258,7 @@ const SignUpTable = (
     setTitle(jsonValues.Title);
     setEvax(jsonValues.Vaccinated);
     setEventId(activeEvent.id);
+    setWorkshop(jsonValues.Workshop);
     setOpen(true);
   };
   const handleClose = () => {
@@ -303,13 +307,13 @@ const SignUpTable = (
     formData.append("files.Signature", file, `${name}-signature.png`);
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Title":"${title}","Phone":"${phone}", "Vaccinated":"${evax}", "active_events":${JSON.stringify(
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Workshop":"${Workshop}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Title":"${title}","Phone":"${phone}", "Vaccinated":"${evax}", "active_events":${JSON.stringify(
         [{ id: activeEvent.id }]
       )}}`
     );
     axios
       .post(
-        `https://visit-tunisia-backoffice.herokuapp.com/attendees`,
+        `https://vt-events-backoffice.visittunisiaproject.org/attendees`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -738,6 +742,29 @@ const SignUpTable = (
                                   errors.email && touched.email && errors.email
                                 }
                                 value={values.email}
+                              />
+                            </div>
+                          </div>
+                          <div class="flex flex-wrap -mx-3 mb-6">
+                            <div class="w-full px-3">
+                              <label
+                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                                for="grid-workshop"
+                              >
+                                Workshop
+                              </label>
+                              <TextInput
+                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                type="workshop"
+                                name="workshop"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={
+                                  errors.workshop &&
+                                  touched.workshop &&
+                                  errors.workshop
+                                }
+                                value={values.workshop}
                               />
                             </div>
                           </div>

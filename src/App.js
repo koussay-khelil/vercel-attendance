@@ -1,6 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import "./App.css";
 import SignUpTable from "./components/SignUpTable";
 import Intro from "./components/intro";
@@ -17,7 +15,7 @@ function App() {
 
   useEffect(() => {
     setActiveEvent(activeEvents[0]);
-  }, [activeEvents]);
+  }, [activeEvents, data]);
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
@@ -76,8 +74,19 @@ function App() {
         Header: "Vacciné",
         accessor: "Vaccinated",
       },
+      {
+        Header: "Workshop",
+        accessor: "Workshop",
+      },
     ],
     []
+  );
+
+  console.log(
+    "data",
+    data,
+    activeEvent,
+    activeEvent && activeEvent?.event?.eventCover?.url
   );
 
   return (

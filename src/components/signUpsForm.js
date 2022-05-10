@@ -10,6 +10,7 @@ import { governorate } from "../data/governorates";
 import { gender } from "../data/gender";
 import { organizations } from "../data/organisation";
 import { age } from "../data/age";
+import { workshops } from "../data/workshops";
 import TextInput from "./TextInput";
 import "react-toastify/dist/ReactToastify.css";
 import "@material-tailwind/react/tailwind.css";
@@ -24,6 +25,7 @@ export default function SignupForm({
 }) {
   const [Gender, setGender] = useState(gender[0]);
   const [Age, setAge] = useState(age[0]);
+  const [Workshop, setWorkshop] = useState(workshops[0]);
   const [Organization, setOrganization] = useState("");
   const [selectedOrganization, setSelectedOrganization] = useState(
     organizations[0]
@@ -77,13 +79,13 @@ export default function SignupForm({
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
       }", "Title":"${e.title}","Phone":"${
         e.phone
-      }", "Vaccinated":"${evax}", "active_event":${JSON.stringify(
+      }", "Workshop":"${Workshop}", "Vaccinated":"${evax}", "active_event":${JSON.stringify(
         activeEvent.id
       )}}`
     );
     axios
       .post(
-        `https://visit-tunisia-backoffice.herokuapp.com/attendees`,
+        `https://vt-events-backoffice.visittunisiaproject.org/attendees`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -112,6 +114,7 @@ export default function SignupForm({
         surname: "",
         gender: Gender,
         age: Age,
+        workshop: Workshop,
         organization:
           selectedOrganization !== "أخرى" ? selectedOrganization : Organization,
         title: "",
@@ -218,6 +221,26 @@ export default function SignupForm({
                 >
                   {age.map((ageBracket) => (
                     <option value={ageBracket}>{ageBracket}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  for="grid-workshop"
+                >
+                  Workshop
+                </label>
+                <select
+                  dir="rtl"
+                  onChange={(e) => setWorkshop(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-workshop"
+                >
+                  {workshops.map((workshop) => (
+                    <option value={workshop}>{workshop}</option>
                   ))}
                 </select>
               </div>

@@ -1,5 +1,5 @@
 export function getStrapiURL(path = "") {
-  return `${"https://visit-tunisia-backoffice.herokuapp.com"}${path}`;
+  return `${"https://vt-events-backoffice.visittunisiaproject.org"}${path}`;
 }
 
 // Helper to make GET requests to Strapi
