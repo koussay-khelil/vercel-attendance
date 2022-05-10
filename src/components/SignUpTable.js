@@ -149,12 +149,8 @@ const SignUpTable = (
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (activeEvent !== undefined) {
-      fetchAPI(`/Signups?active_events.id=${activeEvent.id}`).then((data) =>
-        setPeople(data)
-      );
-      fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then((data) =>
-        setPeople(data)
-      );
+      fetchAPI(`/Signups`).then((data) => setPeople(data));
+      fetchAPI(`/attendees`).then((data) => setPeople(data));
       const unique = [...new Set(people)];
       setPeople(unique);
     }
@@ -753,19 +749,17 @@ const SignUpTable = (
                               >
                                 Workshop
                               </label>
-                              <TextInput
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="workshop"
-                                name="workshop"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  errors.workshop &&
-                                  touched.workshop &&
-                                  errors.workshop
-                                }
-                                value={values.workshop}
-                              />
+                              <select
+                                dir="rtl"
+                                onChange={(e) => setAge(e.target.value)}
+                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="grid-workshop"
+                                defaultValue={values.workshop}
+                              >
+                                {workshops.map((workshop) => (
+                                  <option value={workshop}>{workshop}</option>
+                                ))}
+                              </select>
                             </div>
                           </div>
                           <div class="flex flex-wrap -mx-3 mb-6">

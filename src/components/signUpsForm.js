@@ -79,7 +79,7 @@ export default function SignupForm({
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
       }", "Title":"${e.title}","Phone":"${
         e.phone
-      }", "Workshop":"${Workshop}", "Vaccinated":"${evax}", "active_event":${JSON.stringify(
+      }", "workshop":"${Workshop}", "Vaccinated":"${evax}", "active_event":${JSON.stringify(
         activeEvent.id
       )}}`
     );

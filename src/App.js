@@ -76,7 +76,7 @@ function App() {
       },
       {
         Header: "Workshop",
-        accessor: "Workshop",
+        accessor: "workshop",
       },
     ],
     []
