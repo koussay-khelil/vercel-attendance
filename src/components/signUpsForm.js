@@ -225,26 +225,7 @@ export default function SignupForm({
                 </select>
               </div>
             </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
-              <div class="w-full px-3">
-                <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                  for="grid-workshop"
-                >
-                  Workshop
-                </label>
-                <select
-                  dir="rtl"
-                  onChange={(e) => setWorkshop(e.target.value)}
-                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-workshop"
-                >
-                  {workshops.map((workshop) => (
-                    <option value={workshop}>{workshop}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
+
             <div class="flex flex-wrap -mx-3 mb-6">
               {selectedOrganization !== "Autre" ? (
                 <div class="w-full px-3">
@@ -357,6 +338,26 @@ export default function SignupForm({
                   onBlur={handleBlur}
                   error={errors.email && touched.email && errors.email}
                 />
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  for="grid-workshop"
+                >
+                  ورشة عمل
+                </label>
+                <select
+                  dir="rtl"
+                  onChange={(e) => setWorkshop(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-workshop"
+                >
+                  {workshops.map((workshop) => (
+                    <option value={workshop}>{workshop}</option>
+                  ))}
+                </select>
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
