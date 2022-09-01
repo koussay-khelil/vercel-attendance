@@ -149,8 +149,8 @@ const SignUpTable = (
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (activeEvent !== undefined) {
-      fetchAPI(`/Signups`).then((data) => setPeople(data));
-      fetchAPI(`/attendees`).then((data) => setPeople(data));
+      fetchAPI(`/Signups?active_events.id=1`).then((data) => setPeople(data));
+      fetchAPI(`/attendees?active_events.id=1`).then((data) => setPeople(data));
       const unique = [...new Set(people)];
       setPeople(unique);
     }
@@ -303,7 +303,7 @@ const SignUpTable = (
     formData.append("files.Signature", file, `${name}-signature.png`);
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Workshop":"${Workshop}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Title":"${title}","Phone":"${phone}", "Vaccinated":"${evax}", "active_events":${JSON.stringify(
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Workshop":"${Workshop}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Title":"${title}","Phone":"${phone}", "Vaccinated":"${evax}", "Active_events":${JSON.stringify(
         [{ id: activeEvent.id }]
       )}}`
     );
@@ -741,27 +741,7 @@ const SignUpTable = (
                               />
                             </div>
                           </div>
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-workshop"
-                              >
-                                ورشة عمل
-                              </label>
-                              <select
-                                dir="rtl"
-                                onChange={(e) => setAge(e.target.value)}
-                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-workshop"
-                                defaultValue={values.workshop}
-                              >
-                                {workshops.map((workshop) => (
-                                  <option value={workshop}>{workshop}</option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
+
                           <div class="flex flex-wrap -mx-3 mb-6">
                             <div class="w-full px-3">
                               <label

@@ -79,9 +79,9 @@ export default function SignupForm({
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
       }", "Title":"${e.title}","Phone":"${
         e.phone
-      }", "workshop":"${Workshop}", "Vaccinated":"${evax}", "active_event":${JSON.stringify(
-        activeEvent.id
-      )}}`
+      }", "Vaccinated":"${evax}", "active_events":${JSON.stringify([
+        activeEvent.id,
+      ])}}`
     );
     axios
       .post(
@@ -340,7 +340,7 @@ export default function SignupForm({
                 />
               </div>
             </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
@@ -359,7 +359,7 @@ export default function SignupForm({
                   ))}
                 </select>
               </div>
-            </div>
+            </div> */}
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
