@@ -266,7 +266,7 @@ export default function SignupForm({
                 </div>
               )}
             </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
@@ -283,7 +283,7 @@ export default function SignupForm({
                   error={errors.title && touched.title && errors.title}
                 />
               </div>
-            </div>
+            </div> */}
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label

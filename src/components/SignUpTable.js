@@ -303,7 +303,7 @@ const SignUpTable = (
     formData.append("files.Signature", file, `${name}-signature.png`);
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Workshop":"${Workshop}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Title":"${title}","Phone":"${phone}", "Vaccinated":"${evax}", "Active_events":${JSON.stringify(
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Phone":"${phone}", "Vaccinated":"${evax}", "Active_events":${JSON.stringify(
         [{ id: activeEvent.id }]
       )}}`
     );
@@ -657,7 +657,7 @@ const SignUpTable = (
                               </div>
                             )}
                           </div>
-                          <div class="flex flex-wrap -mx-3 mb-6">
+                          {/* <div class="flex flex-wrap -mx-3 mb-6">
                             <div class="w-full px-3">
                               <label
                                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
@@ -677,7 +677,7 @@ const SignUpTable = (
                                 value={values.title}
                               />
                             </div>
-                          </div>
+                          </div> */}
                           <div class="flex flex-wrap -mx-3 mb-6">
                             <div class="w-full px-3">
                               <label

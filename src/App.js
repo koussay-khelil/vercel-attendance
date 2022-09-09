@@ -74,10 +74,10 @@ function App() {
         Header: "Vacciné",
         accessor: "Vaccinated",
       },
-      {
-        Header: "Workshop",
-        accessor: "workshop",
-      },
+      // {
+      //   Header: "Workshop",
+      //   accessor: "workshop",
+      // },
     ],
     []
   );
