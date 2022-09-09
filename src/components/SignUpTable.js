@@ -233,11 +233,12 @@ const SignUpTable = (
     setAge(values[3]);
     setGovernorate(values[4]);
     setOrganization(values[5]);
-    setTitle(values[6]);
+    // setTitle(values[6]);
     setEmail(values[7]);
     setPhone(values[8]);
     setEvax(values[9]);
-    setWorkshop(values[10]);
+    /* Setting the workshop variable to the value of the 10th element in the values array. */
+    // setWorkshop(values[10]);
     setEventId(activeEvent.id);
     setOpen(true);
   };

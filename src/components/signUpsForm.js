@@ -97,7 +97,7 @@ export default function SignupForm({
         handleClose();
       })
       .catch((err) => {
-        console.log("err", err.response.data.message);
+        console.log("err", err);
         if (err.response.data.message === "An internal server error occurred") {
           toast.error(
             "An error has occurred. You might have been already registered. Please try again later"
@@ -114,7 +114,6 @@ export default function SignupForm({
         surname: "",
         gender: Gender,
         age: Age,
-        workshop: Workshop,
         organization:
           selectedOrganization !== "أخرى" ? selectedOrganization : Organization,
         title: "",
@@ -128,7 +127,6 @@ export default function SignupForm({
         name: Yup.string().required(),
         surname: Yup.string().required(),
         phone: Yup.string().required(),
-        title: Yup.string().required(),
       })}
       onSubmit={(values) => handleSubmit(values)}
     >

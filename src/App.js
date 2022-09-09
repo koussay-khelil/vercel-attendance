@@ -58,10 +58,10 @@ function App() {
         Header: "Organisation",
         accessor: "Organization",
       },
-      {
-        Header: "Fonction",
-        accessor: "Title",
-      },
+      // {
+      //   Header: "Fonction",
+      //   accessor: "Title",
+      // },
       {
         Header: "Email",
         accessor: "email",
