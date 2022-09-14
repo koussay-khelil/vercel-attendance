@@ -70,23 +70,16 @@ function App() {
         Header: "Phone",
         accessor: "Phone",
       },
-      {
-        Header: "Vacciné",
-        accessor: "Vaccinated",
-      },
+      // {
+      //   Header: "Vacciné",
+      //   accessor: "Vaccinated",
+      // },
       // {
       //   Header: "Workshop",
       //   accessor: "workshop",
       // },
     ],
     []
-  );
-
-  console.log(
-    "data",
-    data,
-    activeEvent,
-    activeEvent && activeEvent?.event?.eventCover?.url
   );
 
   return (

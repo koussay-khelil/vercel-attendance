@@ -51,24 +51,8 @@ export default function SignupForm({
   };
 
   const handleSubmit = async (e) => {
-    const dataURLtoFile = (dataurl, filename) => {
-      const arr = dataurl.split(",");
-      const mime = arr[0].match(/:(.*?);/)[1];
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n) {
-        u8arr[n - 1] = bstr.charCodeAt(n - 1);
-        n -= 1; // to make eslint happy
-      }
-      return new File([u8arr], filename, { type: mime });
-    };
-    const file = dataURLtoFile(
-      sigPad.getTrimmedCanvas().toDataURL("image/png"),
-      `${e.name}-signature.png`
-    );
     const formData = new FormData();
-    formData.append("files.Signature", file, `${e.name}-signature.png`);
+
     formData.append(
       "data",
       `{"Name":"${e.name}", "Surname":"${
@@ -79,9 +63,7 @@ export default function SignupForm({
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
       }", "Title":"${e.title}","Phone":"${
         e.phone
-      }", "Vaccinated":"${evax}", "active_events":${JSON.stringify([
-        activeEvent.id,
-      ])}}`
+      }", "active_events":${JSON.stringify([activeEvent.id])}}`
     );
     axios
       .post(
@@ -358,7 +340,7 @@ export default function SignupForm({
                 </select>
               </div>
             </div> */}
-            <div class="flex flex-wrap -mx-3 mb-6">
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
@@ -392,7 +374,7 @@ export default function SignupForm({
                   <option value={"لا"}>لا</option>
                 </select>
               </div>
-            </div>
+            </div> */}
             <div class="flex mt-6">
               <label class="flex items-start">
                 <span class="ml-2 text-right">
@@ -409,7 +391,7 @@ export default function SignupForm({
                 />
               </label>
             </div>
-            <Box sx={{ ...SignatureCanvasStyles }}>
+            {/* <Box sx={{ ...SignatureCanvasStyles }}>
               <SignatureCanvas
                 penColor="black"
                 ref={(ref) => {
@@ -441,14 +423,14 @@ export default function SignupForm({
               {trimmedDataURL ? (
                 <img src={trimmedDataURL} alt="signature" />
               ) : null}
-            </Box>
+            </Box> */}
             <div class="flex items-center justify-end mt-2">
               <Button
                 type="submit"
                 onClick={handleSubmit}
-                color={!checked || !trimmedDataURL ? "gray" : "lightBlue"}
+                color={!checked ? "gray" : "lightBlue"}
                 ripple="light"
-                disabled={isSubmitting || !checked || !trimmedDataURL}
+                disabled={isSubmitting || !checked}
               >
                 التسجيل
               </Button>
