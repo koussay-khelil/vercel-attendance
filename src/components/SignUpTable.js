@@ -147,12 +147,14 @@ const SignUpTable = (
 ) => {
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [activeEventId, setActiveEventId] = useState();
   useEffect(() => {
     if (activeEvent !== undefined) {
-      fetchAPI(`/Signups?active_events.id=1`).then((data) => setPeople(data));
-      fetchAPI(`/attendees?active_events.id=1`).then((data) => setPeople(data));
+      fetchAPI(`/Signups?active_events.id=4`).then((data) => setPeople(data));
+      fetchAPI(`/attendees?active_events.id=4`).then((data) => setPeople(data));
       const unique = [...new Set(people)];
       setPeople(unique);
+      setActiveEventId(activeEvent.id);
     }
   }, [loading, activeEvent]);
   const {
@@ -225,18 +227,26 @@ const SignUpTable = (
     organizations[0]
   );
   const [evax, setEvax] = useState("نعم");
+  const [activity, setActivity] = useState("");
+  const [finishModule, setFinishModule] = useState(true);
+  const [expectations, setExpectations] = useState("N'a pas du tout dépassé");
+  const [relevance, setRelevance] = useState("Très pertinent");
+  const [satisfaction, setSatisfaction] = useState("Très bon");
+  const [comments, setComments] = useState("");
 
   const handleOpen = (values) => {
+    console.log(values);
     setGender(values[0]);
     setName(values[1]);
     setSurname(values[2]);
     setAge(values[3]);
     setGovernorate(values[4]);
     setOrganization(values[5]);
-    // setTitle(values[6]);
-    setEmail(values[7]);
-    setPhone(values[8]);
-    setEvax(values[9]);
+    setActivity(values[6]);
+    setTitle(values[7]);
+    setEmail(values[8]);
+    setPhone(values[9]);
+
     /* Setting the workshop variable to the value of the 10th element in the values array. */
     // setWorkshop(values[10]);
     setEventId(activeEvent.id);
@@ -282,16 +292,17 @@ const SignUpTable = (
   const handleError = (err) => {
     console.error(err);
   };
-
+  console.log("active event", activeEventId);
   const handleSubmit = async (e) => {
     const formData = new FormData();
 
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Phone":"${phone}", "Active_events":${JSON.stringify(
-        [{ id: activeEvent.id }]
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Phone":"${phone}", "activity":"${activity}", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}",  "active_events":${JSON.stringify(
+        [{ id: 4 }]
       )}}`
     );
+    console.log(relevance, expectations, satisfaction);
     axios
       .post(
         `https://vt-events-backoffice.visittunisiaproject.org/attendees`,
@@ -318,7 +329,7 @@ const SignUpTable = (
   // Render the UI for your table
   return (
     <div>
-      <Button onClick={handleQrModalOpen}>Scannez le code QR</Button>
+      {/* <Button onClick={handleQrModalOpen}>Scannez le code QR</Button> */}
       <Modal
         open={qrModalOpen}
         onClose={handleQrModalClose}
@@ -475,6 +486,7 @@ const SignUpTable = (
                       phone: phone,
                       governorate: Governorate,
                       evax: evax,
+                      comments: comments,
                     }}
                     validationSchema={Yup.object().shape({
                       email: Yup.string()
@@ -500,331 +512,431 @@ const SignUpTable = (
                         class="flex flex-row-reverse"
                         style={{ maxWidth: "100%" }}
                       >
-                        {console.log(values)}
-                        <Form class="w-full max-w-lg" onSubmit={handleSubmit}>
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <div class="mt-2 flex justify-end">
-                                <div>
-                                  <label class="inline-flex items-center mr-2">
-                                    <span class="mr-2">{gender[1]}</span>
-                                    <input
-                                      checked={values.gender === gender[1]}
-                                      type="checkbox"
-                                      class="form-checkbox"
-                                      onClick={() => setGender(gender[1])}
-                                    />
-                                  </label>
-                                </div>
-                                <div>
-                                  <label class="inline-flex items-center">
-                                    <span class="mr-2">{gender[0]}</span>
-                                    <input
-                                      checked={values.gender === gender[0]}
-                                      type="checkbox"
-                                      class="form-checkbox"
-                                      onClick={() => setGender(gender[0])}
-                                    />
-                                  </label>
+                        <div class="flex">
+                          <form class="w-full max-w-lg" onSubmit={handleSubmit}>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <div class="mt-2 flex justify-start ">
+                                  <div>
+                                    <label class="inline-flex items-center">
+                                      <input
+                                        checked={Gender === gender[0]}
+                                        type="checkbox"
+                                        class="form-checkbox"
+                                        onClick={() => setGender(gender[0])}
+                                      />
+                                      <span class="mr-2">{gender[0]}</span>
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <label class="inline-flex items-center mr-2">
+                                      <input
+                                        checked={Gender === gender[1]}
+                                        type="checkbox"
+                                        class="form-checkbox"
+                                        onClick={() => setGender(gender[1])}
+                                      />
+                                      <span class="mr-2">{gender[1]}</span>
+                                    </label>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="flex -mx-3 mb-6">
-                            <div class="w-full md:w-1/2 px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-surname"
-                              >
-                                اللقب
-                              </label>
-                              <TextInput
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="text"
-                                name="surname"
-                                value={values.surname}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  errors.surname &&
-                                  touched.surname &&
-                                  errors.surname
-                                }
-                              />
+                            <div class="flex -mx-3 mb-6">
+                              <div class="w-full md:w-1/2 px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-surname"
+                                >
+                                  Nom
+                                </label>
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  type="text"
+                                  name="surname"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={surname}
+                                  error={
+                                    errors.surname &&
+                                    touched.surname &&
+                                    errors.surname
+                                  }
+                                />
+                              </div>
+                              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-name"
+                                >
+                                  Prènom
+                                </label>
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  type="text"
+                                  name="name"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={name}
+                                  error={
+                                    errors.name && touched.name && errors.name
+                                  }
+                                />
+                              </div>
                             </div>
-                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-name"
-                              >
-                                الإسم
-                              </label>
-                              <TextInput
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="text"
-                                name="name"
-                                onChange={handleChange}
-                                value={values.name}
-                                onBlur={handleBlur}
-                                error={
-                                  errors.name && touched.name && errors.name
-                                }
-                              />
-                            </div>
-                          </div>
 
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-age"
-                              >
-                                الفئة العمرية
-                              </label>
-                              <select
-                                dir="rtl"
-                                onChange={(e) => setAge(e.target.value)}
-                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-age"
-                                defaultValue={values.age}
-                              >
-                                {age.map((ageBracket) => (
-                                  <option value={ageBracket}>
-                                    {ageBracket}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            {selectedOrganization !== "أخرى" ? (
+                            <div class="flex flex-wrap -mx-3 mb-6">
                               <div class="w-full px-3">
                                 <label
-                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                  for="grid-organization"
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-age"
                                 >
-                                  المؤسسة
+                                  Age
                                 </label>
                                 <select
-                                  onChange={(e) =>
-                                    setSelectedOrganization(e.target.value)
-                                  }
-                                  dir="rtl"
-                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                  id="grid-organization"
-                                  type="text"
-                                  placeholder="Organization"
-                                  defaultValue={values.organization}
+                                  onChange={(e) => setAge(e.target.value)}
+                                  value={Age}
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-age"
                                 >
-                                  {organizations.map((org) => (
-                                    <option value={org}>{org}</option>
+                                  {age.map((ageBracket) => (
+                                    <option value={ageBracket}>
+                                      {ageBracket}
+                                    </option>
                                   ))}
                                 </select>
                               </div>
-                            ) : (
+                            </div>
+
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              {selectedOrganization !== "أخرى" ? (
+                                <div class="w-full px-3">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                    for="grid-organization"
+                                  >
+                                    Institution
+                                  </label>
+                                  <select
+                                    onChange={(e) =>
+                                      setSelectedOrganization(e.target.value)
+                                    }
+                                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="grid-organization"
+                                    type="text"
+                                    placeholder="Organization"
+                                    value={organization}
+                                  >
+                                    {organizations.map((org) => (
+                                      <option value={org}>{org}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                              ) : (
+                                <div class="w-full px-3">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                    for="grid-organization"
+                                  >
+                                    Institution
+                                  </label>
+                                  <input
+                                    autoFocus
+                                    onChange={(e) =>
+                                      setOrganization(e.target.value)
+                                    }
+                                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="grid-organization"
+                                    type="text"
+                                    placeholder="Organization"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                            <div class="flex flex-wrap -mx-3 mb-6">
                               <div class="w-full px-3">
                                 <label
-                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                  for="grid-organization"
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-workshop"
                                 >
-                                  المؤسسة
+                                  Secteur d'activité
                                 </label>
-                                <input
-                                  onChange={(e) =>
-                                    setOrganization(e.target.value)
-                                  }
-                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                  id="grid-organization"
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="text"
-                                  placeholder="Organization"
-                                  defaultValue={values.organization}
+                                  name="activity"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={activity}
+                                  error={
+                                    errors.activity &&
+                                    touched.activity &&
+                                    errors.activity
+                                  }
                                 />
                               </div>
-                            )}
-                          </div>
-                          {/* <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-city"
-                              >
-                                الوظيفة
-                              </label>
-                              <TextInput
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="text"
-                                name="title"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  errors.title && touched.title && errors.title
-                                }
-                                value={values.title}
-                              />
                             </div>
-                          </div> */}
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-governorate"
-                              >
-                                الولاية
-                              </label>
-                              <select
-                                onChange={(e) => setGovernorate(e.target.value)}
-                                dir="rtl"
-                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-governorate"
-                                defaultValue={values.governorate}
-                              >
-                                {governorate.map((gov) => (
-                                  <option value={gov}>{gov}</option>
-                                ))}
-                              </select>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-city"
+                                >
+                                  Profession
+                                </label>
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  type="text"
+                                  name="title"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={title}
+                                  error={
+                                    errors.title &&
+                                    touched.title &&
+                                    errors.title
+                                  }
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-phone"
-                              >
-                                رقم الهاتف
-                              </label>
-                              <TextInput
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="text"
-                                name="phone"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  errors.phone && touched.phone && errors.phone
-                                }
-                                value={values.phone}
-                              />
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-governorate"
+                                >
+                                  gouvernorat
+                                </label>
+                                <select
+                                  onChange={(e) =>
+                                    setGovernorate(e.target.value)
+                                  }
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-governorate"
+                                  value={Governorate}
+                                >
+                                  {governorate.map((gov) => (
+                                    <option value={gov}>{gov}</option>
+                                  ))}
+                                </select>
+                              </div>
                             </div>
-                          </div>
-                          <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-email"
-                              >
-                                البريد الإلكتروني
-                              </label>
-                              <TextInput
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="email"
-                                name="email"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={
-                                  errors.email && touched.email && errors.email
-                                }
-                                value={values.email}
-                              />
-                            </div>
-                          </div>
 
-                          {/* <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full px-3">
-                              <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
-                                for="grid-governorate"
-                              >
-                                <span dir="ltr" lang="fr">
-                                  {" "}
-                                  ؟ EVAX
-                                </span>
-                                <span dir="rtl" lang="ar">
-                                  {" "}
-                                  من منظومة{" "}
-                                </span>
-                                <span dir="ltr" lang="fr">
-                                  {" "}
-                                  (Pass sanitaire){" "}
-                                </span>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-phone"
+                                >
+                                  Numéro Télephone
+                                </label>
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  type="text"
+                                  name="phone"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={phone}
+                                  error={
+                                    errors.phone &&
+                                    touched.phone &&
+                                    errors.phone
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-email"
+                                >
+                                  Email
+                                </label>
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  type="email"
+                                  name="email"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={email}
+                                  error={
+                                    errors.email &&
+                                    touched.email &&
+                                    errors.email
+                                  }
+                                />
+                              </div>
+                            </div>
 
-                                <span dir="rtl" lang="ar">
-                                  {" "}
-                                  هل قمتم بتحميل شهادة التلقيح ضد فيروس كورونا
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-governorate"
+                                >
+                                  Confirmer la fin du module
+                                </label>
+                                <select
+                                  onChange={(e) =>
+                                    setFinishModule(e.target.value)
+                                  }
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-governorate"
+                                  value={finishModule}
+                                >
+                                  {[
+                                    { title: "Oui", value: true },
+                                    { title: "Non", value: false },
+                                  ].map((gov) => (
+                                    <option value={gov.value}>
+                                      {gov.title}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-governorate"
+                                >
+                                  La formation a-t-elle répondu à vos attentes
+                                  ou les a-t-elle dépassées ?
+                                </label>
+                                <select
+                                  onChange={(e) =>
+                                    setExpectations(e.target.value)
+                                  }
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-governorate"
+                                  value={expectations}
+                                >
+                                  {[
+                                    "N'a pas du tout dépassé",
+                                    "N'a pas dépassé",
+                                    "Neutre",
+                                    "A dépassé",
+                                    "A beaucoup dépassé",
+                                  ].map((gov) => (
+                                    <option value={gov}>{gov}</option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-relevance"
+                                >
+                                  Comment évaluez-vous la pertinence des thèmes
+                                  abordés par rapport à votre emploi actuel ?
+                                </label>
+                                <select
+                                  onChange={(e) => setRelevance(e.target.value)}
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-relevance"
+                                  value={relevance}
+                                >
+                                  {[
+                                    "Très pertinent",
+                                    "pertinent",
+                                    "neutre",
+                                    "pas pertinent",
+                                    "pas du tout pertinent",
+                                  ].map((gov) => (
+                                    <option value={gov}>{gov}</option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-governorate"
+                                >
+                                  Comment évaluez-vous l'organisation et la
+                                  structure générales de la formation et la
+                                  compétence de l'animateur ?
+                                </label>
+                                <select
+                                  onChange={(e) =>
+                                    setSatisfaction(e.target.value)
+                                  }
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-governorate"
+                                  value={satisfaction}
+                                >
+                                  {[
+                                    "Très bon",
+                                    "bon",
+                                    "neutre",
+                                    "mauvais",
+                                    "très mauvais",
+                                  ].map((gov) => (
+                                    <option value={gov}>{gov}</option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                            <div class="flex flex-wrap -mx-3 mb-6">
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-comments"
+                                >
+                                  Autres remarques ou suggestions
+                                </label>
+                                <TextInput
+                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  type="text"
+                                  name="comments"
+                                  onChange={(e) => setComments(e.target.value)}
+                                  onBlur={handleBlur}
+                                  value={comments}
+                                  error={
+                                    errors.comments &&
+                                    touched.comments &&
+                                    errors.comments
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div class="flex mt-6">
+                              <label class="flex items-start">
+                                <input
+                                  type="checkbox"
+                                  class="form-checkbox h-8 w-8 mx-2"
+                                  onClick={() => setChecked(!checked)}
+                                />
+                                <span class="mr-2 ">
+                                  En m'inscrivant, je consens à l'utilisation de
+                                  mes données personnelles À des fins liées au
+                                  forum (communication, invitation à d'autres
+                                  événements, sondages d'opinion...).
+                                  <br /> Vos données personnelles sont traitées
+                                  dans le respect des règles de transparence
+                                  Honnêteté et respect des lois relatives à la
+                                  protection des données personnelles
                                 </span>
                               </label>
-                              <select
-                                onChange={(e) => setEvax(e.target.value)}
-                                dir="rtl"
-                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-governorate"
-                                defaultValue={values.evax}
-                              >
-                                <option value={"نعم"}>نعم</option>
-                                <option value={"لا"}>لا</option>
-                              </select>
                             </div>
-                          </div> */}
-                          <div class="flex mt-6">
-                            <label class="flex items-start">
-                              <span class="ml-2 text-right">
-                                من خلال هذا التسجيل، أوافق على استعمال معطياتي
-                                الشخصية لأغراض متعلقة بالمنتدى (الاتصال، دعوتكم
-                                لتظاهرات أخرى، استطلاعات رأي...).
-                                <br /> تتم معالجة معطياتكم الشخصية وفقا لقواعد
-                                الشفافية والأمانة واحترام القوانين المتعلقة
-                                بحماية المعطيات الشخصية
-                              </span>
-                              <input
-                                type="checkbox"
-                                class="form-checkbox mt-1 ml-2"
-                                onClick={() => setChecked(!checked)}
-                              />
-                            </label>
-                          </div>
-                          {/* <Box sx={{ ...SignatureCanvasStyles }}>
-                            <SignatureCanvas
-                              penColor="black"
-                              ref={(ref) => {
-                                sigPad = ref;
-                              }}
-                              canvasProps={{
-                                width: 500,
-                                height: 200,
-                                className: "sigCanvas",
-                              }}
-                            />
-                            <div class="flex">
+                            <div class="flex items-center justify-end mt-2">
                               <Button
-                                type="button"
-                                onClick={trim}
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 rounded focus:outline-none focus:shadow-outline"
+                                onClick={() => handleSubmit()}
+                                type="submit"
+                                color={!checked ? "gray" : "lightBlue"}
+                                ripple="light"
+                                disabled={isSubmitting || !checked}
                               >
-                                Sign
-                              </Button>
-                              <Button
-                                type="button"
-                                color="red"
-                                class="ml-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                                onClick={clear}
-                              >
-                                Clear
+                                Attendance
                               </Button>
                             </div>
-                            {trimmedDataURL ? (
-                              <img src={trimmedDataURL} alt="signature" />
-                            ) : null}
-                          </Box> */}
-                          <div class="flex items-center justify-end mt-2">
-                            <Button
-                              type="submit"
-                              onClick={handleSubmit}
-                              color={!checked ? "gray" : "lightBlue"}
-                              ripple="light"
-                              disabled={isSubmitting || !checked}
-                            >
-                              التسجيل
-                            </Button>
-                          </div>
-                        </Form>
+                          </form>
+                        </div>
                       </div>
                     )}
                   </Formik>

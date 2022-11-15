@@ -58,10 +58,14 @@ function App() {
         Header: "Organisation",
         accessor: "Organization",
       },
-      // {
-      //   Header: "Fonction",
-      //   accessor: "Title",
-      // },
+      {
+        Header: "Activité",
+        accessor: "activity",
+      },
+      {
+        Header: "Fonction",
+        accessor: "Title",
+      },
       {
         Header: "Email",
         accessor: "email",
@@ -87,7 +91,11 @@ function App() {
       <Intro
         eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url}
       />
-
+      <div style={{ textAlign: "center", fontSize: "32px" }}>
+        Atelier UPSKILL. <br /> Programme de Renforcement de Capacités des
+        Fédérations et Associations dans le Tourisme.
+        <br /> Du 16 - 18 Novembre 2022
+      </div>
       <SignUpTable
         columns={columns}
         setData={setData}
