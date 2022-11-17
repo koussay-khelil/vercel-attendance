@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import "./App.css";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import SignUpTable from "./components/SignUpTable";
 import Intro from "./components/intro";
 import { fetchAPI } from "./lib/api";
@@ -74,14 +76,6 @@ function App() {
         Header: "Phone",
         accessor: "Phone",
       },
-      // {
-      //   Header: "Vacciné",
-      //   accessor: "Vaccinated",
-      // },
-      // {
-      //   Header: "Workshop",
-      //   accessor: "workshop",
-      // },
     ],
     []
   );
@@ -91,11 +85,31 @@ function App() {
       <Intro
         eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url}
       />
-      <div style={{ textAlign: "center", fontSize: "32px" }}>
-        Atelier UPSKILL. <br /> Programme de Renforcement de Capacités des
-        Fédérations et Associations dans le Tourisme.
-        <br /> Du 16 - 18 Novembre 2022
-      </div>
+
+      {activeEvent && activeEvent?.event?.title === "SME Registration" ? (
+        <div style={{ textAlign: "center", fontSize: "32px" }}>
+          Atelier UPSKILL. <br /> Programme de Renforcement de Capacités des
+          Fédérations et Associations dans le Tourisme.
+          <br /> Du 16 - 18 Novembre 2022
+        </div>
+      ) : (
+        <div style={{ textAlign: "center", fontSize: "32px" }}>
+          {activeEvent?.event?.title}
+        </div>
+      )}
+      {console.log("activeEvents", activeEvent)}
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={activeEvent && activeEvent}
+        label="Age"
+        onChange={(e) => setActiveEvent(e.target.value)}
+      >
+        {activeEvents.map((event) => (
+          <MenuItem value={event}>{event.event.title}</MenuItem>
+        ))}
+      </Select>
+
       <SignUpTable
         columns={columns}
         setData={setData}
