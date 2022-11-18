@@ -150,9 +150,9 @@ const SignUpTable = (
   const [activeEventId, setActiveEventId] = useState();
   useEffect(() => {
     if (activeEvent !== undefined) {
-      fetchAPI(`/Signups?active_events.id=${activeEvent.id}`).then((data) =>
-        setPeople(data)
-      );
+      // fetchAPI(`/Signups?active_events.id=${activeEvent.id}`).then((data) =>
+      //   setPeople(data)
+      // );
       fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then((data) =>
         setPeople(data)
       );
@@ -302,7 +302,7 @@ const SignUpTable = (
 
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Organization":"${organization}", "Phone":"${phone}", "activity":"${activity}", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}",  "active_events":${JSON.stringify(
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${organization}", "Phone":"${phone}", "activity":"${activity}", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}",  "active_events":${JSON.stringify(
         [{ id: 4 }]
       )}}`
     );
@@ -485,12 +485,13 @@ const SignUpTable = (
                       surname: surname,
                       gender: Gender,
                       age: Age,
-                      organization: organization,
-                      title: title,
-                      phone: phone,
+                      organization,
+                      title,
+                      phone,
                       governorate: Governorate,
-                      evax: evax,
-                      comments: comments,
+                      evax,
+                      comments,
+                      activity,
                     }}
                     validationSchema={Yup.object().shape({
                       email: Yup.string()
@@ -499,7 +500,7 @@ const SignUpTable = (
                       name: Yup.string().required(),
                       surname: Yup.string().required(),
                       phone: Yup.string().required(),
-                      title: Yup.string().required(),
+                      // title: Yup.string().required(),
                     })}
                     onSubmit={(values) => handleSubmit(values)}
                   >
@@ -669,9 +670,9 @@ const SignUpTable = (
                                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="text"
                                   name="activity"
-                                  onChange={handleChange}
+                                  onChange={(e) => setActivity(e.target.value)}
                                   onBlur={handleBlur}
-                                  value={activity}
+                                  default={activity}
                                   error={
                                     errors.activity &&
                                     touched.activity &&
@@ -692,7 +693,7 @@ const SignUpTable = (
                                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="text"
                                   name="title"
-                                  onChange={handleChange}
+                                  onChange={(e) => setTitle(e.target.value)}
                                   onBlur={handleBlur}
                                   value={title}
                                   error={
@@ -934,7 +935,6 @@ const SignUpTable = (
                                 type="submit"
                                 color={!checked ? "gray" : "lightBlue"}
                                 ripple="light"
-                                disabled={isSubmitting || !checked}
                               >
                                 Attendance
                               </Button>

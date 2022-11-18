@@ -66,7 +66,7 @@ function App() {
       },
       {
         Header: "Fonction",
-        accessor: "Title",
+        accessor: "title",
       },
       {
         Header: "Email",
