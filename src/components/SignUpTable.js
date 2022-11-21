@@ -239,7 +239,6 @@ const SignUpTable = (
   const [comments, setComments] = useState("");
 
   const handleOpen = (values) => {
-    console.log(values);
     setGender(values[0]);
     setName(values[1]);
     setSurname(values[2]);
@@ -296,7 +295,7 @@ const SignUpTable = (
   const handleError = (err) => {
     console.error(err);
   };
-  console.log("active event", activeEventId);
+
   const handleSubmit = async (e) => {
     const formData = new FormData();
 

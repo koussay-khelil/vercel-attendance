@@ -24,6 +24,7 @@ export default function SignupForm({
   handleClose,
 }) {
   const [Gender, setGender] = useState(gender[0]);
+  const [title, setTitle] = useState("");
   const [Age, setAge] = useState(age[0]);
   const [Workshop, setWorkshop] = useState(workshops[0]);
   const [Organization, setOrganization] = useState("");
@@ -33,26 +34,15 @@ export default function SignupForm({
   const [Governorate, setGovernorate] = useState(governorate[0]);
   const [evax, setEvax] = useState("نعم");
   const [checked, setChecked] = useState(false);
-
-  const SignatureCanvasStyles = {
-    border: "1px solid #000",
-    boxShadow: 12,
-    paddingTop: "15px",
-    paddingBottom: "15px",
-  };
-
-  const [trimmedDataURL, setTrimmedDataURL] = useState(null);
-  let sigPad = {};
-  const clear = () => {
-    sigPad.clear();
-  };
-  const trim = () => {
-    setTrimmedDataURL(sigPad.getTrimmedCanvas().toDataURL("image/png"));
-  };
+  const [finishModule, setFinishModule] = useState(true);
+  const [expectations, setExpectations] = useState("N'a pas du tout dépassé");
+  const [relevance, setRelevance] = useState("Très pertinent");
+  const [satisfaction, setSatisfaction] = useState("Très bon");
+  const [comments, setComments] = useState("");
 
   const handleSubmit = async (e) => {
     const formData = new FormData();
-
+    console.log("e", e, comments);
     formData.append(
       "data",
       `{"Name":"${e.name}", "Surname":"${
@@ -61,9 +51,11 @@ export default function SignupForm({
         e.email
       }", "Organization":"${
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
-      }", "Title":"${e.title}","Phone":"${
-        e.phone
-      }", "active_events":${JSON.stringify([activeEvent.id])}}`
+      }", "Title":"${title}","Phone":"${e.phone}","activity":"${
+        e.activity
+      }", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}" ,"active_events":${JSON.stringify(
+        [activeEvent.id]
+      )}}`
     );
     axios
       .post(
@@ -98,9 +90,15 @@ export default function SignupForm({
         age: Age,
         organization:
           selectedOrganization !== "أخرى" ? selectedOrganization : Organization,
-        title: "",
+        title: title,
         phone: "",
         governorate: Governorate,
+        activity: "",
+        finishModule: finishModule,
+        expectations: expectations,
+        relevance: relevance,
+        satisfaction: satisfaction,
+        comments: comments,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
@@ -124,27 +122,27 @@ export default function SignupForm({
           <Form class="w-full max-w-lg" onSubmit={handleSubmit}>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
-                <div class="mt-2 flex justify-end">
-                  <div>
-                    <label class="inline-flex items-center mr-2">
-                      <span class="mr-2">{gender[1]}</span>
-                      <input
-                        checked={Gender === gender[1]}
-                        type="checkbox"
-                        class="form-checkbox"
-                        onClick={() => setGender(gender[1])}
-                      />
-                    </label>
-                  </div>
+                <div class="mt-2 flex justify-start">
                   <div>
                     <label class="inline-flex items-center">
-                      <span class="mr-2">{gender[0]}</span>
                       <input
                         checked={Gender === gender[0]}
                         type="checkbox"
                         class="form-checkbox"
                         onClick={() => setGender(gender[0])}
                       />
+                      <span class="mr-2">{gender[0]}</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="inline-flex items-center mr-2">
+                      <input
+                        checked={Gender === gender[1]}
+                        type="checkbox"
+                        class="form-checkbox"
+                        onClick={() => setGender(gender[1])}
+                      />
+                      <span class="mr-2">{gender[1]}</span>
                     </label>
                   </div>
                 </div>
@@ -153,10 +151,10 @@ export default function SignupForm({
             <div class="flex -mx-3 mb-6">
               <div class="w-full md:w-1/2 px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-surname"
                 >
-                  اللقب
+                  Nom
                 </label>
                 <TextInput
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -169,10 +167,10 @@ export default function SignupForm({
               </div>
               <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-name"
                 >
-                  الإسم
+                  Prènom
                 </label>
                 <TextInput
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -188,13 +186,12 @@ export default function SignupForm({
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-age"
                 >
-                  الفئة العمرية
+                  Age
                 </label>
                 <select
-                  dir="rtl"
                   onChange={(e) => setAge(e.target.value)}
                   class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-age"
@@ -210,14 +207,13 @@ export default function SignupForm({
               {selectedOrganization !== "Autre" ? (
                 <div class="w-full px-3">
                   <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                     for="grid-organization"
                   >
-                    المؤسسة
+                    Institution
                   </label>
                   <select
                     onChange={(e) => setSelectedOrganization(e.target.value)}
-                    dir="rtl"
                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-organization"
                     type="text"
@@ -231,10 +227,10 @@ export default function SignupForm({
               ) : (
                 <div class="w-full px-3">
                   <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                     for="grid-organization"
                   >
-                    المؤسسة
+                    Institution
                   </label>
                   <input
                     onChange={(e) => setOrganization(e.target.value)}
@@ -249,7 +245,7 @@ export default function SignupForm({
             {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-city"
                 >
                   الوظيفة
@@ -267,14 +263,13 @@ export default function SignupForm({
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-governorate"
                 >
-                  الولاية
+                  Gouvernorat
                 </label>
                 <select
                   onChange={(e) => setGovernorate(e.target.value)}
-                  dir="rtl"
                   class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-governorate"
                 >
@@ -287,10 +282,29 @@ export default function SignupForm({
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  for="grid-city"
+                >
+                  Profession
+                </label>
+                <TextInput
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  type="text"
+                  name="title"
+                  onChange={(e) => setTitle(e.target.value)}
+                  onBlur={handleBlur}
+                  value={title}
+                  error={errors.title && touched.title && errors.title}
+                />
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-phone"
                 >
-                  رقم الهاتف
+                  Numéro Télephone
                 </label>
                 <TextInput
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -305,10 +319,10 @@ export default function SignupForm({
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-email"
                 >
-                  البريد الإلكتروني
+                  Email
                 </label>
                 <TextInput
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -323,13 +337,13 @@ export default function SignupForm({
             {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-workshop"
                 >
                   ورشة عمل
                 </label>
                 <select
-                  dir="rtl"
+                  
                   onChange={(e) => setWorkshop(e.target.value)}
                   class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-workshop"
@@ -343,14 +357,14 @@ export default function SignupForm({
             {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
-                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-right"
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                   for="grid-governorate"
                 >
                   <span dir="ltr" lang="fr">
                     {" "}
                     ؟ EVAX
                   </span>
-                  <span dir="rtl" lang="ar">
+                  <span  lang="ar">
                     {" "}
                     من منظومة{" "}
                   </span>
@@ -359,14 +373,14 @@ export default function SignupForm({
                     (Pass sanitaire){" "}
                   </span>
 
-                  <span dir="rtl" lang="ar">
+                  <span  lang="ar">
                     {" "}
                     هل قمتم بتحميل شهادة التلقيح ضد فيروس كورونا
                   </span>
                 </label>
                 <select
                   onChange={(e) => setEvax(e.target.value)}
-                  dir="rtl"
+                  
                   class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-governorate"
                 >
@@ -375,20 +389,139 @@ export default function SignupForm({
                 </select>
               </div>
             </div> */}
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  for="grid-governorate"
+                >
+                  Confirmer la fin du module
+                </label>
+                <select
+                  onChange={(e) => setFinishModule(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-governorate"
+                  value={finishModule}
+                >
+                  {[
+                    { title: "Oui", value: true },
+                    { title: "Non", value: false },
+                  ].map((gov) => (
+                    <option value={gov.value}>{gov.title}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  for="grid-governorate"
+                >
+                  La formation a-t-elle répondu à vos attentes ou les a-t-elle
+                  dépassées ?
+                </label>
+                <select
+                  onChange={(e) => setExpectations(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-governorate"
+                  value={expectations}
+                >
+                  {[
+                    "N'a pas du tout dépassé",
+                    "N'a pas dépassé",
+                    "Neutre",
+                    "A dépassé",
+                    "A beaucoup dépassé",
+                  ].map((gov) => (
+                    <option value={gov}>{gov}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  for="grid-relevance"
+                >
+                  Comment évaluez-vous la pertinence des thèmes abordés par
+                  rapport à votre emploi actuel ?
+                </label>
+                <select
+                  onChange={(e) => setRelevance(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-relevance"
+                  value={relevance}
+                >
+                  {[
+                    "Très pertinent",
+                    "pertinent",
+                    "neutre",
+                    "pas pertinent",
+                    "pas du tout pertinent",
+                  ].map((gov) => (
+                    <option value={gov}>{gov}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  for="grid-governorate"
+                >
+                  Comment évaluez-vous l'organisation et la structure générales
+                  de la formation et la compétence de l'animateur ?
+                </label>
+                <select
+                  onChange={(e) => setSatisfaction(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-governorate"
+                  value={satisfaction}
+                >
+                  {["Très bon", "bon", "neutre", "mauvais", "très mauvais"].map(
+                    (gov) => (
+                      <option value={gov}>{gov}</option>
+                    )
+                  )}
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  for="grid-comments"
+                >
+                  Autres remarques ou suggestions
+                </label>
+                <TextInput
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  type="text"
+                  name="comments"
+                  onChange={(e) => setComments(e.target.value)}
+                  value={comments}
+                  error={errors.comments && touched.comments && errors.comments}
+                />
+              </div>
+            </div>
             <div class="flex mt-6">
               <label class="flex items-start">
-                <span class="ml-2 text-right">
-                  من خلال هذا التسجيل، أوافق على استعمال معطياتي الشخصية لأغراض
-                  متعلقة بالمنتدى (الاتصال، دعوتكم لتظاهرات أخرى، استطلاعات
-                  رأي...).
-                  <br /> تتم معالجة معطياتكم الشخصية وفقا لقواعد الشفافية
-                  والأمانة واحترام القوانين المتعلقة بحماية المعطيات الشخصية
-                </span>
                 <input
                   type="checkbox"
                   class="form-checkbox mt-1 ml-2"
                   onClick={() => setChecked(!checked)}
                 />
+                <span class="ml-2 text-left">
+                  En m'inscrivant, je consens à l'utilisation de mes données
+                  personnelles À des fins liées au forum (communication,
+                  invitation à d'autres événements, sondages d'opinion...).
+                  <br /> Vos données personnelles sont traitées dans le respect
+                  des règles de transparence Honnêteté et respect des lois
+                  relatives à la protection des données personnelles
+                </span>
               </label>
             </div>
             {/* <Box sx={{ ...SignatureCanvasStyles }}>
@@ -432,7 +565,7 @@ export default function SignupForm({
                 ripple="light"
                 disabled={isSubmitting || !checked}
               >
-                التسجيل
+                Inscription
               </Button>
             </div>
           </Form>
