@@ -53,9 +53,7 @@ export default function SignupForm({
         selectedOrganization !== "Autre" ? selectedOrganization : Organization
       }", "Title":"${title}","Phone":"${e.phone}","activity":"${
         e.activity
-      }", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}" ,"active_events":${JSON.stringify(
-        [activeEvent.id]
-      )}}`
+      }" ,"active_events":${JSON.stringify([activeEvent.id])}}`
     );
     axios
       .post(
@@ -94,11 +92,6 @@ export default function SignupForm({
         phone: "",
         governorate: Governorate,
         activity: "",
-        finishModule: finishModule,
-        expectations: expectations,
-        relevance: relevance,
-        satisfaction: satisfaction,
-        comments: comments,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
@@ -389,7 +382,7 @@ export default function SignupForm({
                 </select>
               </div>
             </div> */}
-            <div class="flex flex-wrap -mx-3 mb-6">
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -411,8 +404,8 @@ export default function SignupForm({
                   ))}
                 </select>
               </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            </div> */}
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -438,8 +431,8 @@ export default function SignupForm({
                   ))}
                 </select>
               </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            </div> */}
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -465,8 +458,8 @@ export default function SignupForm({
                   ))}
                 </select>
               </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            </div> */}
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -488,8 +481,8 @@ export default function SignupForm({
                   )}
                 </select>
               </div>
-            </div>
-            <div class="flex flex-wrap -mx-3 mb-6">
+            </div> */}
+            {/* <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label
                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -506,7 +499,7 @@ export default function SignupForm({
                   error={errors.comments && touched.comments && errors.comments}
                 />
               </div>
-            </div>
+            </div> */}
             <div class="flex mt-6">
               <label class="flex items-start">
                 <input
