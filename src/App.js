@@ -110,6 +110,7 @@ function App() {
       </Select>
 
       <SignUpTable
+        eventUId={activeEvent && activeEvent.id}
         columns={columns}
         setData={setData}
         updateMyData={updateMyData}

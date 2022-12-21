@@ -142,6 +142,7 @@ const SignUpTable = (
     skipPageReset,
     activeEvent,
     initialState,
+    eventUId,
   },
   props
 ) => {
@@ -302,7 +303,7 @@ const SignUpTable = (
     formData.append(
       "data",
       `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${organization}", "Phone":"${phone}", "activity":"${activity}", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}",  "active_events":${JSON.stringify(
-        [{ id: 4 }]
+        [{ id: eventUId }]
       )}}`
     );
     axios
