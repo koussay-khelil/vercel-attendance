@@ -153,7 +153,7 @@ const SignUpTable = (
       // fetchAPI(`/Signups?active_events.id=${activeEvent.id}`).then((data) =>
       //   setPeople(data)
       // );
-      fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then((data) =>
+      fetchAPI(`/signups?active_events.id=${activeEvent.id}`).then((data) =>
         setPeople(data)
       );
       const unique = [...new Set(people)];
@@ -305,7 +305,6 @@ const SignUpTable = (
         [{ id: 4 }]
       )}}`
     );
-    console.log(relevance, expectations, satisfaction);
     axios
       .post(
         `https://vt-events-backoffice.visittunisiaproject.org/attendees`,
@@ -930,7 +929,7 @@ const SignUpTable = (
                             </div>
                             <div class="flex items-center justify-end mt-2">
                               <Button
-                                onClick={() => handleSubmit()}
+                                // onClick={() => handleSubmit()}
                                 type="submit"
                                 color={!checked ? "gray" : "lightBlue"}
                                 ripple="light"

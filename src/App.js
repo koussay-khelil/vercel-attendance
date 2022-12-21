@@ -97,7 +97,6 @@ function App() {
           {activeEvent?.event?.title}
         </div>
       )}
-      {console.log("activeEvents", activeEvent)}
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
