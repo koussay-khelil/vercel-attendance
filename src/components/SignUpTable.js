@@ -17,6 +17,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
+import { Select, MenuItem } from "@mui/material";
 import TableToolbar from "./TableToolbar";
 import TablePaginationActions from "./TablePaginationActions";
 import { governorate } from "../data/governorates";
@@ -149,20 +150,21 @@ const SignUpTable = (
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeEventId, setActiveEventId] = useState();
+  const [listChoice, setListChoice] = useState("signups");
   useEffect(() => {
     if (activeEvent !== undefined) {
-      fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then((data) =>
-        setPeople(data)
-      );
-      fetchAPI(`/signups?active_events.id=${activeEvent.id}`).then((data) =>
-        setPeople((prev) => [...prev, ...data])
-      );
-      console.log(people);
+      listChoice === "signups"
+        ? fetchAPI(`/signups?active_events.id=${activeEvent.id}`).then((data) =>
+            setPeople(data)
+          )
+        : fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then(
+            (data) => setPeople(data)
+          );
       const unique = [...new Set(people)];
       setPeople(unique);
       setActiveEventId(activeEvent.id);
     }
-  }, [loading, activeEvent]);
+  }, [loading, activeEvent, listChoice]);
   const {
     getTableProps,
     headerGroups,
@@ -350,6 +352,29 @@ const SignUpTable = (
         </Box>
       </Modal>
       <TableContainer>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <div>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              // label="Age"
+              value={listChoice}
+            >
+              <MenuItem
+                value={"signups"}
+                onClick={() => setListChoice("signups")}
+              >
+                Signups
+              </MenuItem>
+              <MenuItem
+                value={"attendance"}
+                onClick={() => setListChoice("attendance")}
+              >
+                Attendance
+              </MenuItem>
+            </Select>
+          </div>
+        </div>
         <TableToolbar
           deleteUserHandler={deleteUserHandler}
           addUserHandler={addUserHandler}

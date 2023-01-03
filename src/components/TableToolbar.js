@@ -37,7 +37,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     fontSize: "15px !important",
     [theme.breakpoints.down("sm")]: {
       display: "block",
-    }
+    },
   },
   filter: {
     [theme.breakpoints.down("sm")]: {
@@ -58,7 +58,7 @@ const TableToolbar = (props) => {
     globalFilter,
     activeEvent,
     setLoading,
-    loading
+    loading,
   } = props;
   return (
     <Toolbar
