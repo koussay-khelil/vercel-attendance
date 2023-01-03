@@ -151,12 +151,13 @@ const SignUpTable = (
   const [activeEventId, setActiveEventId] = useState();
   useEffect(() => {
     if (activeEvent !== undefined) {
-      // fetchAPI(`/Signups?active_events.id=${activeEvent.id}`).then((data) =>
-      //   setPeople(data)
-      // );
-      fetchAPI(`/signups?active_events.id=${activeEvent.id}`).then((data) =>
+      fetchAPI(`/attendees?active_events.id=${activeEvent.id}`).then((data) =>
         setPeople(data)
       );
+      fetchAPI(`/signups?active_events.id=${activeEvent.id}`).then((data) =>
+        setPeople((prev) => [...prev, ...data])
+      );
+      console.log(people);
       const unique = [...new Set(people)];
       setPeople(unique);
       setActiveEventId(activeEvent.id);
@@ -412,7 +413,7 @@ const SignUpTable = (
 
           <TableFooter>
             <TableRow>
-              <TablePagination
+              <TablePaginationActions
                 rowsPerPageOptions={[
                   5,
                   10,
