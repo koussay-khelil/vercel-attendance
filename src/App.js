@@ -86,17 +86,24 @@ function App() {
         eventImageUrl={activeEvent && activeEvent?.event?.eventCover?.url}
       />
 
-      {activeEvent && activeEvent?.event?.title === "SME Registration" ? (
-        <div style={{ textAlign: "center", fontSize: "32px" }}>
-          Atelier UPSKILL. <br /> Programme de Renforcement de Capacités des
-          Fédérations et Associations dans le Tourisme.
-          <br /> Du 16 - 18 Novembre 2022
-        </div>
-      ) : (
-        <div style={{ textAlign: "center", fontSize: "32px" }}>
-          {activeEvent?.event?.title}
-        </div>
-      )}
+      <div style={{ textAlign: "center", fontSize: "32px" }}>
+        {activeEvent?.event?.title}
+      </div>
+      {activeEvent &&
+        activeEvent?.event?.title === "UPSKILL II Workshop --Tabarka--" && (
+          <div style={{ textAlign: "center", fontSize: "32px" }}>
+            <br /> Tourism Federations & Associations Strengthening Program{" "}
+            <br /> January 24-25, 2023 <br /> Thabraka Hotel Tabarka
+          </div>
+        )}
+      {activeEvent &&
+        activeEvent?.event?.title === "UPSKILL II Workshop -- Tozeur" && (
+          <div style={{ textAlign: "center", fontSize: "32px" }}>
+            <br /> Tourism Federations & Associations Strengthening Program
+            <br /> January 13-14, 2023 <br /> Ras El Ain Hotel Tozeur
+          </div>
+        )}
+
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
@@ -110,6 +117,7 @@ function App() {
       </Select>
 
       <SignUpTable
+        eventTitle={activeEvent && activeEvent?.event?.title}
         eventUId={activeEvent && activeEvent.id}
         columns={columns}
         setData={setData}

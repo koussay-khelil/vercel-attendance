@@ -645,7 +645,7 @@ const SignUpTable = (
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                                     for="grid-organization"
                                   >
-                                    Institution
+                                    Association
                                   </label>
                                   <select
                                     onChange={(e) =>
@@ -668,7 +668,7 @@ const SignUpTable = (
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                                     for="grid-organization"
                                   >
-                                    Institution
+                                    Association
                                   </label>
                                   <input
                                     autoFocus
