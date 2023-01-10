@@ -46,4 +46,5 @@ export const organizations = [
   "A.Festival Jeux Populaires Bni Mhira",
   "Association Droits Et Citoyenneté Tataouine Tunisie",
   "Sfax El Mezyena",
+  "Autre",
 ];
