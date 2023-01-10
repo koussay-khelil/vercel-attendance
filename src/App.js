@@ -93,7 +93,7 @@ function App() {
         activeEvent?.event?.title === "UPSKILL II Workshop --Tabarka--" && (
           <div style={{ textAlign: "center", fontSize: "32px" }}>
             <br /> Tourism Federations & Associations Strengthening Program{" "}
-            <br /> January 24-25, 2023 <br /> Thabraca Hotel Tabarka
+            <br /> February 1-2, 2023 <br /> Thabraca Hotel Tabarka
           </div>
         )}
       {activeEvent &&
