@@ -90,10 +90,11 @@ function App() {
         {activeEvent?.event?.title}
       </div>
       {activeEvent &&
-        activeEvent?.event?.title === "UPSKILL II Workshop --Tabarka--" && (
+        activeEvent?.event?.title ===
+          "Tourism SME Training & Assistance Program" && (
           <div style={{ textAlign: "center", fontSize: "32px" }}>
-            <br /> Tourism Federations & Associations Strengthening Program{" "}
-            <br /> February 1-2, 2023 <br /> Thabraca Hotel Tabarka
+            <br /> Tourism SME Training & Assistance Program <br /> February
+            17-18, 2023 <br /> Palm Beach Hotel, Tozeur
           </div>
         )}
       {activeEvent &&
