@@ -137,4 +137,5 @@ export const organizations = [
   "Artisanat Mechy spécialiste en article en Halfa et de décoration",
 
   "Dar Elhenchir Maison d’hôte",
+  "Autre",
 ];

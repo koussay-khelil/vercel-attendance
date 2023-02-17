@@ -50,11 +50,16 @@ export default function SignupForm({
         e.surname
       }", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${
         e.email
-      }", "workshop":"${selectedDepartment}", "Organization":"${Hotel}", "Title":"${title}","Phone":"${
-        e.phone
-      }","activity":"${e.activity}" ,"active_events":${JSON.stringify([
-        activeEvent.id,
-      ])}}`
+      }", "workshop":"${selectedDepartment}", "Organization":"${
+        activeEvent?.event?.title ===
+        "Tourism SME Training & Assistance Program"
+          ? selectedOrganization === "Autre"
+            ? Organization
+            : selectedOrganization
+          : Hotel
+      }", "Title":"${title}","Phone":"${e.phone}","activity":"${
+        e.activity
+      }" ,"active_events":${JSON.stringify([activeEvent.id])}}`
     );
     axios
       .post(
@@ -87,7 +92,11 @@ export default function SignupForm({
         surname: "",
         gender: Gender,
         age: Age,
-        organization: Hotel,
+        organization:
+          activeEvent?.event?.title ===
+          "Tourism SME Training & Assistance Program"
+            ? selectedOrganization
+            : Hotel,
         title: title,
         phone: "",
         governorate: Governorate,
@@ -217,7 +226,7 @@ export default function SignupForm({
                     onChange={(e) =>
                       activeEvent?.event?.title ===
                       "Tourism SME Training & Assistance Program"
-                        ? setOrganization(e.target.value)
+                        ? setSelectedOrganization(e.target.value)
                         : setHotel(e.target.value)
                     }
                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -250,7 +259,12 @@ export default function SignupForm({
                   </label>
                   <input
                     autoFocus
-                    onChange={(e) => setHotel(e.target.value)}
+                    onChange={(e) =>
+                      activeEvent?.event?.title ===
+                      "Tourism SME Training & Assistance Program"
+                        ? setOrganization(e.target.value)
+                        : setHotel(e.target.value)
+                    }
                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-organization"
                     type="text"
