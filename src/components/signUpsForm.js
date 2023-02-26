@@ -240,9 +240,9 @@ export default function SignupForm({
                     </option>
                     {activeEvent?.event?.title ===
                     "Tourism SME Training & Assistance Program"
-                      ? organizations.map((org) => (
-                          <option value={org}>{org}</option>
-                        ))
+                      ? organizations
+                          .sort()
+                          .map((org) => <option value={org}>{org}</option>)
                       : hotels.map((org) => <option value={org}>{org}</option>)}
                   </select>
                 </div>

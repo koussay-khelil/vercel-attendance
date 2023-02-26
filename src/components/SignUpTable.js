@@ -3,11 +3,10 @@ import axios from "axios";
 import QrReader from "react-qr-reader";
 import { toast } from "react-toastify";
 import { reduxForm } from "redux-form";
-import SignatureCanvas from "react-signature-canvas";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import MaUTable from "@mui/material/Table";
-import { Formik, Form } from "formik";
+import { Formik } from "formik";
 import PropTypes from "prop-types";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -223,6 +222,7 @@ const SignUpTable = (
   const [surname, setSurname] = useState("");
   const [Gender, setGender] = useState("");
   const [Age, setAge] = useState("");
+  const [attendeeId, setAttendeeId] = useState();
   const [Workshop, setWorkshop] = useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -243,13 +243,13 @@ const SignUpTable = (
   const [comments, setComments] = useState("");
 
   const handleOpen = (values) => {
-    setGender(values[0]);
-    setName(values[1]);
-    setSurname(values[2]);
-    setAge(values[3]);
-    setGovernorate(values[4]);
-    setOrganization(values[5]);
-    setActivity(values[6]);
+    setAttendeeId(values[0]);
+    setGender(values[1]);
+    setName(values[2]);
+    setSurname(values[3]);
+    setAge(values[4]);
+    setGovernorate(values[5]);
+    setOrganization(values[6]);
     setTitle(values[7]);
     setEmail(values[8]);
     setPhone(values[9]);
@@ -310,8 +310,8 @@ const SignUpTable = (
       )}}`
     );
     axios
-      .post(
-        `https://vt-events-backoffice.visittunisiaproject.org/attendees`,
+      .put(
+        `https://vt-events-backoffice.visittunisiaproject.org/attendees/${e.attendeeId}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -333,6 +333,8 @@ const SignUpTable = (
       });
   };
   // Render the UI for your table
+
+  console.log("the people are here", people);
   return (
     <div>
       {/* <Button onClick={handleQrModalOpen}>Scannez le code QR</Button> */}
@@ -517,6 +519,7 @@ const SignUpTable = (
                       evax,
                       comments,
                       activity,
+                      attendeeId,
                     }}
                     validationSchema={Yup.object().shape({
                       email: Yup.string()
@@ -584,7 +587,7 @@ const SignUpTable = (
                                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="text"
                                   name="surname"
-                                  onChange={handleChange}
+                                  onChange={(e) => setSurname(e.target.value)}
                                   onBlur={handleBlur}
                                   value={surname}
                                   error={
@@ -605,7 +608,7 @@ const SignUpTable = (
                                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="text"
                                   name="name"
-                                  onChange={handleChange}
+                                  onChange={(e) => setName(e.target.value)}
                                   onBlur={handleBlur}
                                   value={name}
                                   error={
@@ -657,7 +660,7 @@ const SignUpTable = (
                                     placeholder="Organization"
                                     value={organization}
                                   >
-                                    {organizations.map((org) => (
+                                    {organizations.sort().map((org) => (
                                       <option value={org}>{org}</option>
                                     ))}
                                   </select>
@@ -683,29 +686,7 @@ const SignUpTable = (
                                 </div>
                               )}
                             </div>
-                            <div class="flex flex-wrap -mx-3 mb-6">
-                              <div class="w-full px-3">
-                                <label
-                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                                  for="grid-workshop"
-                                >
-                                  Secteur d'activité
-                                </label>
-                                <TextInput
-                                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                  type="text"
-                                  name="activity"
-                                  onChange={(e) => setActivity(e.target.value)}
-                                  onBlur={handleBlur}
-                                  default={activity}
-                                  error={
-                                    errors.activity &&
-                                    touched.activity &&
-                                    errors.activity
-                                  }
-                                />
-                              </div>
-                            </div>
+
                             <div class="flex flex-wrap -mx-3 mb-6">
                               <div class="w-full px-3">
                                 <label
@@ -764,7 +745,7 @@ const SignUpTable = (
                                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="text"
                                   name="phone"
-                                  onChange={handleChange}
+                                  onChange={(e) => setPhone(e.target.value)}
                                   onBlur={handleBlur}
                                   value={phone}
                                   error={
@@ -787,7 +768,7 @@ const SignUpTable = (
                                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                   type="email"
                                   name="email"
-                                  onChange={handleChange}
+                                  onChange={(e) => setEmail(e.target.value)}
                                   onBlur={handleBlur}
                                   value={email}
                                   error={
@@ -799,7 +780,7 @@ const SignUpTable = (
                               </div>
                             </div>
 
-                            <div class="flex flex-wrap -mx-3 mb-6">
+                            {/* <div class="flex flex-wrap -mx-3 mb-6">
                               <div class="w-full px-3">
                                 <label
                                   class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -934,7 +915,7 @@ const SignUpTable = (
                                   }
                                 />
                               </div>
-                            </div>
+                            </div> */}
                             <div class="flex mt-6">
                               <label class="flex items-start">
                                 <input
