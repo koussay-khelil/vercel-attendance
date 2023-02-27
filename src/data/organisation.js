@@ -88,5 +88,4 @@ export const organizations = [
   "Quality Travel",
   "Agrotourism farm project Idea",
   "SPORSORA EVENTS ",
-  "Autre",
 ];

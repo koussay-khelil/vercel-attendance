@@ -218,12 +218,7 @@ export default function SignupForm({
                       : "Hôtel"}
                   </label>
                   <select
-                    onChange={(e) =>
-                      activeEvent?.event?.title ===
-                      "Tourism SME Training & Assistance Program"
-                        ? setSelectedOrganization(e.target.value)
-                        : setHotel(e.target.value)
-                    }
+                    onChange={(e) => setSelectedOrganization(e.target.value)}
                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-organization"
                     type="text"
@@ -233,12 +228,11 @@ export default function SignupForm({
                       {" "}
                       Selectionner{" "}
                     </option>
-                    {activeEvent?.event?.title ===
-                    "Tourism SME Training & Assistance Program"
-                      ? organizations
-                          .sort()
-                          .map((org) => <option value={org}>{org}</option>)
-                      : hotels.map((org) => <option value={org}>{org}</option>)}
+
+                    {organizations.sort().map((org) => (
+                      <option value={org}>{org}</option>
+                    ))}
+                    <option value="Autre">Autre</option>
                   </select>
                 </div>
               ) : (
@@ -247,10 +241,7 @@ export default function SignupForm({
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                     for="grid-organization"
                   >
-                    {activeEvent?.event?.title ===
-                    "Tourism SME Training & Assistance Program"
-                      ? "Organisation"
-                      : "Hôtel"}
+                    Organisation
                   </label>
                   <input
                     autoFocus

@@ -243,13 +243,13 @@ const SignUpTable = (
   const [comments, setComments] = useState("");
 
   const handleOpen = (values) => {
-    console.log("Get here", values);
     setAttendeeId(values[0]);
     setGender(values[1]);
     setName(values[2]);
     setSurname(values[3]);
     setAge(values[4]);
     setGovernorate(values[5]);
+    setSelectedOrganization(values[6]);
     setOrganization(values[6]);
     setTitle(values[7]);
     setEmail(values[8]);
@@ -726,9 +726,13 @@ const SignUpTable = (
                                 </select>
                               </div>
                             </div>
-
+                            {console.log(
+                              selectedOrganization,
+                              organizations.includes(organization)
+                            )}
                             <div class="flex flex-wrap -mx-3 mb-6">
-                              {selectedOrganization !== "Autre" ? (
+                              {selectedOrganization !== "Autre" &&
+                              organizations.includes(selectedOrganization) ? (
                                 <div class="w-full px-3">
                                   <label
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -736,19 +740,22 @@ const SignUpTable = (
                                   >
                                     Associations
                                   </label>
+
                                   <select
                                     onChange={(e) =>
                                       setSelectedOrganization(e.target.value)
                                     }
                                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                     id="grid-organization"
-                                    type="text"
-                                    placeholder="Organization"
-                                    defaultValue={organization}
+                                    value={selectedOrganization}
                                   >
+                                    <option disabled value>
+                                      Selectionner
+                                    </option>
                                     {organizations.sort().map((org) => (
                                       <option value={org}>{org}</option>
                                     ))}
+                                    <option value="Autre">Autre</option>
                                   </select>
                                 </div>
                               ) : (
@@ -767,6 +774,7 @@ const SignUpTable = (
                                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                     id="grid-organization"
                                     type="text"
+                                    value={organization}
                                   />
                                 </div>
                               )}
@@ -1047,7 +1055,6 @@ const SignUpTable = (
                               )}
                               <div class="flex items-center justify-end mt-2">
                                 <Button
-                                  // onClick={() => handleSubmit()}
                                   type="submit"
                                   color={!checked ? "gray" : "lightBlue"}
                                   ripple="light"
