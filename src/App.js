@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import EventPage from "./pages/event";
-import TestPage from "./pages/test";
 import "./App.css";
 
 function App() {

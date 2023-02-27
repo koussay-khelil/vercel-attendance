@@ -300,41 +300,113 @@ const SignUpTable = (
     console.error(err);
   };
 
-  const handleSubmit = async (e) => {
+  const MoveToSignup = async (e) => {
     const formData = new FormData();
-
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${organization}", "Phone":"${phone}", "activity":"${activity}", "ModuleFinished":"${finishModule}", "expectations":"${expectations}", "relevance":"${relevance}", "satisfaction":"${satisfaction}" , "comments":"${comments}",  "active_events":${JSON.stringify(
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${
+        selectedOrganization !== "Autre" ? selectedOrganization : organization
+      }", "Phone":"${phone}", 
+         "active_events":${JSON.stringify([{ id: eventUId }])}}`
+    );
+    const data = {
+      email: e.email,
+      Name: e.name,
+      Surname: e.surname,
+      Gender,
+      Age,
+      Organization:
+        selectedOrganization !== "Autre" ? selectedOrganization : organization,
+      Title: title,
+      Phone: phone,
+      Governorate,
+      active_events: [JSON.stringify(eventUId)],
+    };
+    const jsonifiedData = JSON.stringify(data);
+    axios
+      .all([
+        axios.post(
+          `https://vt-events-backoffice.visittunisiaproject.org/signups`,
+          jsonifiedData,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        ),
+        axios.delete(
+          `https://vt-events-backoffice.visittunisiaproject.org/attendees/${e.attendeeId}`,
+
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        ),
+      ])
+      .then(
+        axios.spread((data1, data2) => {
+          toast.success("You have successfully been moved to signups page");
+          handleClose();
+          window.location.reload(true);
+        })
+      );
+  };
+
+  const handleSubmit = async (e) => {
+    const formData = new FormData();
+    formData.append(
+      "data",
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${
+        selectedOrganization !== "Autre" ? selectedOrganization : organization
+      }", "Phone":"${phone}", "activity":"${activity}",  "active_events":${JSON.stringify(
         [{ id: eventUId }]
       )}}`
     );
-    axios
-      .put(
-        `https://vt-events-backoffice.visittunisiaproject.org/attendees/${e.attendeeId}`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      )
-      .then((res) => {
-        handleClose();
-        toast.success("You have successfully been assigned as an attendee");
-        setLoading(!loading);
-      })
-      .catch((err) => {
-        console.log("err", err?.response?.data?.message);
-        if (err.response.data.message === "An internal server error occurred") {
-          toast.error(
-            "An error has occurred. You might have been already registered. Please try again later"
+    listChoice !== "signups"
+      ? axios
+          .put(
+            `https://vt-events-backoffice.visittunisiaproject.org/attendees/${e.attendeeId}`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          )
+          .then((res) => {
+            handleClose();
+            toast.success("You have successfully updated an attendee");
+            setLoading(!loading);
+          })
+          .catch((err) => {
+            console.log("err", err?.response?.data?.message);
+            if (
+              err.response.data.message === "An internal server error occurred"
+            ) {
+              toast.error(
+                "An error has occurred. You might have been already registered. Please try again later"
+              );
+            }
+            handleClose();
+          })
+      : axios
+          .all([
+            axios.post(
+              `https://vt-events-backoffice.visittunisiaproject.org/attendees`,
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            ),
+            axios.delete(
+              `https://vt-events-backoffice.visittunisiaproject.org/signups/${e.attendeeId}`
+            ),
+          ])
+          .then(
+            axios.spread((data1, data2) => {
+              console.log("data1", data1, "data2", data2);
+              handleClose();
+              window.location.reload(true);
+            })
           );
-        }
-        handleClose();
-      });
   };
   // Render the UI for your table
 
-  console.log("the people are here", people);
   return (
     <div>
       {/* <Button onClick={handleQrModalOpen}>Scannez le code QR</Button> */}
@@ -549,30 +621,26 @@ const SignUpTable = (
                           <form class="w-full max-w-lg" onSubmit={handleSubmit}>
                             <div class="flex flex-wrap -mx-3 mb-6">
                               <div class="w-full px-3">
-                                <div class="mt-2 flex justify-start ">
-                                  <div>
-                                    <label class="inline-flex items-center">
-                                      <input
-                                        checked={Gender === gender[0]}
-                                        type="checkbox"
-                                        class="form-checkbox"
-                                        onClick={() => setGender(gender[0])}
-                                      />
-                                      <span class="mr-2">{gender[0]}</span>
-                                    </label>
-                                  </div>
-                                  <div>
-                                    <label class="inline-flex items-center mr-2">
-                                      <input
-                                        checked={Gender === gender[1]}
-                                        type="checkbox"
-                                        class="form-checkbox"
-                                        onClick={() => setGender(gender[1])}
-                                      />
-                                      <span class="mr-2">{gender[1]}</span>
-                                    </label>
-                                  </div>
-                                </div>
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
+                                  for="grid-age"
+                                >
+                                  Genres
+                                </label>
+                                <select
+                                  defaultValue={Gender}
+                                  onChange={(e) => setGender(e.target.value)}
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-age"
+                                >
+                                  <option disabled selected value>
+                                    {" "}
+                                    Selectionner{" "}
+                                  </option>
+                                  {["Mr", "Mrs"].map((gender) => (
+                                    <option value={gender}>{gender}</option>
+                                  ))}
+                                </select>
                               </div>
                             </div>
                             <div class="flex -mx-3 mb-6">
@@ -642,7 +710,7 @@ const SignUpTable = (
                             </div>
 
                             <div class="flex flex-wrap -mx-3 mb-6">
-                              {selectedOrganization !== "أخرى" ? (
+                              {selectedOrganization !== "Autre" ? (
                                 <div class="w-full px-3">
                                   <label
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -681,7 +749,6 @@ const SignUpTable = (
                                     class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                     id="grid-organization"
                                     type="text"
-                                    placeholder="Organization"
                                   />
                                 </div>
                               )}
@@ -935,15 +1002,31 @@ const SignUpTable = (
                                 </span>
                               </label>
                             </div>
-                            <div class="flex items-center justify-end mt-2">
-                              <Button
-                                // onClick={() => handleSubmit()}
-                                type="submit"
-                                color={!checked ? "gray" : "lightBlue"}
-                                ripple="light"
-                              >
-                                Attendance
-                              </Button>
+                            <div class="flex justify-between">
+                              {listChoice !== "signups" && (
+                                <div class="flex items-center justify-start mt-2">
+                                  <Button
+                                    type="button"
+                                    onClick={() => MoveToSignup(values)}
+                                    color={"red"}
+                                    ripple="light"
+                                  >
+                                    Move back to Signups
+                                  </Button>
+                                </div>
+                              )}
+                              <div class="flex items-center justify-end mt-2">
+                                <Button
+                                  // onClick={() => handleSubmit()}
+                                  type="submit"
+                                  color={!checked ? "gray" : "lightBlue"}
+                                  ripple="light"
+                                >
+                                  {listChoice !== "signups"
+                                    ? "Update"
+                                    : "Attendance"}
+                                </Button>
+                              </div>
                             </div>
                           </form>
                         </div>

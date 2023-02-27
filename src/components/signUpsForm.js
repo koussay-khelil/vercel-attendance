@@ -125,30 +125,25 @@ export default function SignupForm({
           <Form class="w-full max-w-lg" onSubmit={handleSubmit}>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
-                <div class="mt-2 flex justify-start">
-                  <div>
-                    <label class="inline-flex items-center">
-                      <input
-                        checked={Gender === gender[0]}
-                        type="checkbox"
-                        class="form-checkbox"
-                        onClick={() => setGender(gender[0])}
-                      />
-                      <span class="mr-2">{gender[0]}</span>
-                    </label>
-                  </div>
-                  <div>
-                    <label class="inline-flex items-center mr-2">
-                      <input
-                        checked={Gender === gender[1]}
-                        type="checkbox"
-                        class="form-checkbox"
-                        onClick={() => setGender(gender[1])}
-                      />
-                      <span class="mr-2">{gender[1]}</span>
-                    </label>
-                  </div>
-                </div>
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
+                  for="grid-age"
+                >
+                  Genre
+                </label>
+                <select
+                  onChange={(e) => setGender(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-age"
+                >
+                  <option disabled selected value>
+                    {" "}
+                    Selectionner{" "}
+                  </option>
+                  {["Mr", "Mrs"].map((gender) => (
+                    <option value={gender}>{gender}</option>
+                  ))}
+                </select>
               </div>
             </div>
             <div class="flex -mx-3 mb-6">
