@@ -243,6 +243,7 @@ const SignUpTable = (
   const [comments, setComments] = useState("");
 
   const handleOpen = (values) => {
+    console.log("Get here", values);
     setAttendeeId(values[0]);
     setGender(values[1]);
     setName(values[2]);
@@ -716,7 +717,7 @@ const SignUpTable = (
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                                     for="grid-organization"
                                   >
-                                    Association
+                                    Associations
                                   </label>
                                   <select
                                     onChange={(e) =>
@@ -726,7 +727,7 @@ const SignUpTable = (
                                     id="grid-organization"
                                     type="text"
                                     placeholder="Organization"
-                                    value={organization}
+                                    defaultValue={organization}
                                   >
                                     {organizations.sort().map((org) => (
                                       <option value={org}>{org}</option>
