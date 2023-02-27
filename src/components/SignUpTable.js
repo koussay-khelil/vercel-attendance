@@ -301,6 +301,23 @@ const SignUpTable = (
     console.error(err);
   };
 
+  const DeleteUser = async (e) => {
+    axios
+      .delete(
+        `https://vt-events-backoffice.visittunisiaproject.org/attendees/${e.attendeeId}`
+      )
+      .then((res) => {
+        console.log(res);
+        handleClose();
+        toast.success("Utilisateur supprimé avec succès");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Erreur lors de la suppression de l'utilisateur");
+      });
+  };
+
   const MoveToSignup = async (e) => {
     const formData = new FormData();
     formData.append(
@@ -1004,6 +1021,18 @@ const SignUpTable = (
                               </label>
                             </div>
                             <div class="flex justify-between">
+                              {listChoice !== "signups" && (
+                                <div class="flex items-center justify-start mt-2">
+                                  <Button
+                                    type="button"
+                                    onClick={() => DeleteUser(values)}
+                                    color={"red"}
+                                    ripple="light"
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
+                              )}
                               {listChoice !== "signups" && (
                                 <div class="flex items-center justify-start mt-2">
                                   <Button
