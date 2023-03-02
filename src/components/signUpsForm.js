@@ -212,10 +212,7 @@ export default function SignupForm({
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                     for="grid-organization"
                   >
-                    {activeEvent?.event?.title ===
-                    "Tourism SME Training & Assistance Program"
-                      ? "Organisation"
-                      : "Hôtel"}
+                    PME
                   </label>
                   <select
                     onChange={(e) => setSelectedOrganization(e.target.value)}
@@ -241,7 +238,7 @@ export default function SignupForm({
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
                     for="grid-organization"
                   >
-                    Organisation
+                    PME
                   </label>
                   <input
                     autoFocus
