@@ -738,7 +738,7 @@ const SignUpTable = (
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                                     for="grid-organization"
                                   >
-                                    Associations
+                                    PME
                                   </label>
 
                                   <select
@@ -764,7 +764,7 @@ const SignUpTable = (
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                                     for="grid-organization"
                                   >
-                                    Association
+                                    PME
                                   </label>
                                   <input
                                     autoFocus
