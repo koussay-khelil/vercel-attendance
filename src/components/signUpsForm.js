@@ -50,16 +50,11 @@ export default function SignupForm({
         e.surname
       }", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${
         e.email
-      }", "workshop":"${selectedDepartment}", "Organization":"${
-        activeEvent?.event?.title ===
-        "Tourism SME Training & Assistance Program"
-          ? selectedOrganization === "Autre"
-            ? Organization
-            : selectedOrganization
-          : Hotel
-      }", "Title":"${title}","Phone":"${e.phone}","activity":"${
-        e.activity
-      }" ,"active_events":${JSON.stringify([activeEvent.id])}}`
+      }", "workshop":"${selectedDepartment}", "Organization":"${Organization}", "Title":"${title}","Phone":"${
+        e.phone
+      }","activity":"${e.activity}" ,"active_events":${JSON.stringify([
+        activeEvent.id,
+      ])}}`
     );
     axios
       .post(
@@ -206,83 +201,23 @@ export default function SignupForm({
             </div>
 
             <div class="flex flex-wrap -mx-3 mb-6">
-              {selectedOrganization !== "Autre" ? (
-                <div class="w-full px-3">
-                  <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
-                    for="grid-organization"
-                  >
-                    PME
-                  </label>
-                  <select
-                    onChange={(e) => setSelectedOrganization(e.target.value)}
-                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-organization"
-                    type="text"
-                    placeholder="Organization"
-                  >
-                    <option disabled selected value>
-                      {" "}
-                      Selectionner{" "}
-                    </option>
-
-                    {organizations.sort().map((org) => (
-                      <option value={org}>{org}</option>
-                    ))}
-                    <option value="Autre">Autre</option>
-                  </select>
-                </div>
-              ) : (
-                <div class="w-full px-3">
-                  <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
-                    for="grid-organization"
-                  >
-                    PME
-                  </label>
-                  <input
-                    autoFocus
-                    onChange={(e) =>
-                      activeEvent?.event?.title ===
-                      "Tourism SME Training & Assistance Program"
-                        ? setOrganization(e.target.value)
-                        : setHotel(e.target.value)
-                    }
-                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-organization"
-                    type="text"
-                    placeholder="Organization"
-                  />
-                </div>
-              )}
-            </div>
-            {activeEvent?.event?.title !==
-              "Tourism SME Training & Assistance Program" && (
-              <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full px-3">
-                  <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
-                    for="grid-age"
-                  >
-                    Département
-                  </label>
-                  <select
-                    defaultValue={selectedDepartment}
-                    onChange={(e) => setSelectedDepartment(e.target.value)}
-                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-age"
-                  >
-                    <option disabled selected value>
-                      {" "}
-                      Selectionner{" "}
-                    </option>
-                    {departments.map((department) => (
-                      <option value={department}>{department}</option>
-                    ))}
-                  </select>
-                </div>
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-left"
+                  for="grid-organization"
+                >
+                  PME
+                </label>
+                <input
+                  autoFocus
+                  onChange={(e) => setOrganization(e.target.value)}
+                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-organization"
+                  type="text"
+                  placeholder="Organization"
+                />
               </div>
-            )}
+            </div>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
                 <label

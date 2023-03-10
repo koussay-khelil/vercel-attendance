@@ -322,9 +322,7 @@ const SignUpTable = (
     const formData = new FormData();
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${
-        selectedOrganization !== "Autre" ? selectedOrganization : organization
-      }", "Phone":"${phone}", 
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${organization}", "Phone":"${phone}", 
          "active_events":${JSON.stringify([{ id: eventUId }])}}`
     );
     const data = {
@@ -333,8 +331,7 @@ const SignUpTable = (
       Surname: e.surname,
       Gender,
       Age,
-      Organization:
-        selectedOrganization !== "Autre" ? selectedOrganization : organization,
+      Organization: organization,
       Title: title,
       Phone: phone,
       Governorate,
@@ -371,9 +368,7 @@ const SignUpTable = (
     const formData = new FormData();
     formData.append(
       "data",
-      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${
-        selectedOrganization !== "Autre" ? selectedOrganization : organization
-      }", "Phone":"${phone}", "activity":"${activity}",  "active_events":${JSON.stringify(
+      `{"Name":"${name}", "Surname":"${surname}", "Gender":"${Gender}", "Age":"${Age}","Governorate":"${Governorate}", "email":"${email}", "Title":"${title}", "Organization":"${organization}", "Phone":"${phone}", "activity":"${activity}",  "active_events":${JSON.stringify(
         [{ id: eventUId }]
       )}}`
     );
@@ -726,58 +721,25 @@ const SignUpTable = (
                                 </select>
                               </div>
                             </div>
-                            {console.log(
-                              selectedOrganization,
-                              organizations.includes(organization)
-                            )}
                             <div class="flex flex-wrap -mx-3 mb-6">
-                              {selectedOrganization !== "Autre" &&
-                              organizations.includes(selectedOrganization) ? (
-                                <div class="w-full px-3">
-                                  <label
-                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                                    for="grid-organization"
-                                  >
-                                    PME
-                                  </label>
-
-                                  <select
-                                    onChange={(e) =>
-                                      setSelectedOrganization(e.target.value)
-                                    }
-                                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    id="grid-organization"
-                                    value={selectedOrganization}
-                                  >
-                                    <option disabled value>
-                                      Selectionner
-                                    </option>
-                                    {organizations.sort().map((org) => (
-                                      <option value={org}>{org}</option>
-                                    ))}
-                                    <option value="Autre">Autre</option>
-                                  </select>
-                                </div>
-                              ) : (
-                                <div class="w-full px-3">
-                                  <label
-                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                                    for="grid-organization"
-                                  >
-                                    PME
-                                  </label>
-                                  <input
-                                    autoFocus
-                                    onChange={(e) =>
-                                      setOrganization(e.target.value)
-                                    }
-                                    class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    id="grid-organization"
-                                    type="text"
-                                    value={organization}
-                                  />
-                                </div>
-                              )}
+                              <div class="w-full px-3">
+                                <label
+                                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                                  for="grid-organization"
+                                >
+                                  PME
+                                </label>
+                                <input
+                                  autoFocus
+                                  onChange={(e) =>
+                                    setOrganization(e.target.value)
+                                  }
+                                  class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                  id="grid-organization"
+                                  type="text"
+                                  value={organization}
+                                />
+                              </div>
                             </div>
 
                             <div class="flex flex-wrap -mx-3 mb-6">
