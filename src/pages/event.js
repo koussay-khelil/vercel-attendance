@@ -1,24 +1,35 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams } from "react-router-dom";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import SignUpTable from "../components/SignUpTable";
 import Intro from "../components/intro";
 import { fetchAPI } from "../lib/api";
 
 function EventPage() {
-  const { eventId } = useParams();
   const [data, setData] = useState();
-  const [activeEvents, setActiveEvents] = useState([]);
   const [activeEvent, setActiveEvent] = useState();
+  const [activeEvents, setActiveEvents] = useState();
   const [skipPageReset, setSkipPageReset] = useState(false);
+
   useEffect(() => {
-    fetchAPI(`/active-events/${eventId}`).then((data) => setActiveEvent(data));
+    fetchAPI("/active-events").then((data) => setActiveEvents(data));
   }, []);
 
-  //   useEffect(() => {
-  //     setActiveEvent(activeEvents);
-  //   }, [activeEvents, data]);
+  const getTodaysEvent = () => {
+    const today = new Date().toLocaleDateString("fr-FR");
+    const todaysEvent = activeEvents?.find(
+      (event) =>
+        new Date(event.event.start).toLocaleDateString("fr-FR") === today
+    );
+    return todaysEvent;
+  };
+
+  const todaysEvent = getTodaysEvent();
+
+  useEffect(() => {
+    todaysEvent &&
+      fetchAPI(`/active-events/${todaysEvent.id}`).then((data) =>
+        setActiveEvent(data)
+      );
+  }, [todaysEvent]);
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
@@ -93,13 +104,6 @@ function EventPage() {
           <div style={{ textAlign: "center", fontSize: "32px" }}>
             {activeEvent?.event?.title}
           </div>
-          {activeEvent &&
-            activeEvent?.event?.title ===
-              "Tourism SME Training & Assistance Program" && (
-              <div style={{ textAlign: "center", fontSize: "32px" }}>
-                <br /> March 2-3, 2023 <br /> Hotel Dar Ismail, Tabarka
-              </div>
-            )}
           <SignUpTable
             eventTitle={activeEvent && activeEvent?.event?.title}
             eventUId={activeEvent && activeEvent.id}

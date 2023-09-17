@@ -149,7 +149,7 @@ const SignUpTable = (
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeEventId, setActiveEventId] = useState();
-  const [listChoice, setListChoice] = useState("signups");
+  const [listChoice, setListChoice] = useState("attendance");
   useEffect(() => {
     if (activeEvent !== undefined) {
       listChoice === "signups"

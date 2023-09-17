@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/:eventId" element={<EventPage />} />
+          <Route path="/" element={<EventPage />} />
         </Routes>
       </div>
     </BrowserRouter>
