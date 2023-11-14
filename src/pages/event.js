@@ -15,14 +15,18 @@ function EventPage() {
 
   const getTodaysEvent = () => {
     const today = new Date().toLocaleDateString("fr-FR");
+    console.log("today", today);
     const todaysEvent = activeEvents?.find(
       (event) =>
-        new Date(event.event.start).toLocaleDateString("fr-FR") === today
+        today >= new Date(event.event.start).toLocaleDateString("fr-FR") &&
+        today <= new Date(event.event.end).toLocaleDateString("fr-FR")
     );
     return todaysEvent;
   };
 
   const todaysEvent = getTodaysEvent();
+
+  console.log("todaysEvent", todaysEvent, activeEvents);
 
   useEffect(() => {
     todaysEvent &&
